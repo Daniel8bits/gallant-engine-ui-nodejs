@@ -1,0 +1,33 @@
+
+button {
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  //box-shadow: 0 1px 4px black;
+
+  &.button-primary {
+    background-color: red;
+    color: white;
+    padding: .25rem .5em;
+    cursor: pointer;
+    border: 1px solid white;
+  
+    &:hover {
+      background-color: crimson;
+    }
+  }
+  
+  &.button-simple {
+    background-color: transparent;
+    color: white;
+    padding: .25rem .5em;
+    cursor: pointer;
+    border: 1px solid white;
+    display: inline-flex;
+    align-items: center;
+  
+    &:hover {
+      background-color: #222;
+    }
+  }
+}

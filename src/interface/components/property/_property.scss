@@ -1,0 +1,21 @@
+
+.property {
+  & > h4 {
+    color: white;
+    background-color: #222;
+    padding: .25rem 1rem;
+    margin-bottom: 1rem;
+  }
+  & > ul {
+    list-style-type: none;
+    & > li {
+      display: flex;
+
+      & > span {
+        display: inline-block;
+        margin: 0 1rem;
+        color: white;
+      }
+    }
+  }
+}

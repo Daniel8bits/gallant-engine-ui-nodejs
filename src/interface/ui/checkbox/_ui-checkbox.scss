@@ -1,0 +1,34 @@
+div.ui-checkbox {
+  display: flex;
+  align-items: center;
+
+  & > input[type="checkbox"] {
+    appearance: none;
+    margin-right: .25rem;
+    background-color: transparent;
+    border: 1px solid white;
+    padding: .65rem;
+    border-radius: 4px;
+    
+    & + span {
+      position: absolute;
+      margin-left: .325rem;
+      display: inline-block;
+      width: .76rem;
+      height: .8rem;
+      background-color: transparent;
+      border-radius: 2px;
+      pointer-events: none;
+    }
+
+    &:checked + span {
+      background-color: white;
+    }
+  }
+
+  & > label {
+    font-size: .75rem;
+    color: white;
+    user-select: none;
+  }
+}

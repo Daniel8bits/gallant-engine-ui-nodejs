@@ -1,0 +1,30 @@
+
+
+.entity-properties {
+  
+  & >
+  .simplebar-wrapper >
+  .simplebar-mask >
+  .simplebar-offset >
+  .simplebar-content-wrapper >
+  .simplebar-content {
+
+    & > h3 {
+      padding: .8rem 1rem;
+      color: white;
+      background-color: #500;
+      font-weight: normal;
+    }
+
+    & > div.options {
+
+      display: flex;
+      align-items: center;
+
+      & > * {
+        margin: .4rem 0 .4rem .4rem;
+      }
+
+    }
+  }
+}

@@ -1,0 +1,58 @@
+
+
+
+.scene-manager {
+  height: 60% !important;
+  margin-bottom: 10px;
+  overflow: hidden;
+  & > 
+  [data-simplebar] > 
+  .simplebar-wrapper >
+  .simplebar-mask >
+  .simplebar-offset >
+  .simplebar-content-wrapper >
+  .simplebar-content >
+  ul {
+    display: inline;
+    color: white;
+    & > li {
+      display: flex;
+      align-items: center;
+
+      &:nth-child(even) {
+        background-color: #222;
+      }
+      
+      & > div {
+        width: 100%;
+        padding-left: .5em;
+        cursor: default;
+      }
+
+      & > button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: .5em;
+        font-size: .9em;
+        background-color: transparent;
+        box-shadow: none;
+        color: white;
+        cursor: pointer;
+        
+        &:hover {
+          background-color: #faaa;
+        }
+      }
+
+      &.selected {
+        background-color: #f55a;
+      }
+
+      &:not(.selected):hover {
+        background-color: #f77a;
+      }
+
+    }
+  }
+}

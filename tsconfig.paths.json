@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+        "@engine/*": ["./src/engine/*"],
+        "@interface-core/*": ["./src/interface-core/*"],
+        "@components/*": ["./src/interface/components/*"],
+        "@layouts/*": ["./src/interface/layouts/*"],
+        "@ui/*": ["./src/interface/ui/*"],
+        "@hooks/*": ["./src/interface/hooks/*"],
+        "@utils/*": ["./src/interface/utils/*"],
+        "@style/*": ["./src/interface/style/*"],
+        "@store/*": ["./src/interface/store/*"],
+        "@views/*": ["./src/interface/views/*"],
+        "@providers/*": ["./src/interface/providers/*"],
+        "@custom-types/*": ["./src/interface/custom-types/*"],
+        "@root/*": ["./*"]
+    }
+  }
+}

@@ -1,0 +1,88 @@
+
+.input-slider {
+  display: flex;
+  border-radius: 4px;
+  margin-bottom: 1em;
+  border: 1px solid white;
+  height: 22px;
+
+  &.disabled {
+    opacity: .5;
+  }
+
+  & > div {
+
+    overflow: hidden;
+    height: inherit;
+    border: none;
+
+    & > input, & > div {
+      position: relative;
+      width: 100%;
+      height: inherit;
+    }
+    
+    & > div {
+      top: -22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #555;
+      color: white;
+      cursor: ew-resize !important;
+      user-select: none;
+      font-size: .75rem;
+  
+      &:active {
+        background-color: #666;
+      }
+    }
+  
+    & > input {
+      text-align: center;
+      outline: none;
+      border: none;
+      background-color: #666;
+      color: white;
+      font-size: .75rem;
+  
+      // para retirar as flechinhas
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      &[type=number] {
+        -moz-appearance: textfield;
+      }
+
+    }
+
+  }
+  
+  
+  
+  & > button {
+    padding: .25rem;
+    display: flex;
+    align-items: center;
+    box-shadow: none;
+    background-color: #555;
+    color: white;
+    cursor: pointer;
+    
+    &:nth-child(1) {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &:nth-child(3) {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    &:hover {
+      background-color: #666;
+    }
+  }
+}
