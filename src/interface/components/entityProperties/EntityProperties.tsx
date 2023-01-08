@@ -1,11 +1,11 @@
 import Property from '@components/property/Property';
-import Entity from '@engine/core/Entity';
-import Vec3 from '@engine/math/Vec3';
 import useGameCore from '@hooks/useGameCore';
-import SimpleEntity from '@interface-core/entities/SimpleEntity';
 import { RazorContext } from '@providers/RazorProvider';
 import UIButton from '@ui/buttons/UIButton';
 import UICheckBox from '@ui/checkbox/UICheckBox';
+import Entity from 'gallant-engine/dist/src/core/entities/Entity';
+import { Vector3 } from 'gallant-engine/dist/src/math/LA';
+import Orientation from 'gallant-engine/dist/src/math/Orientation';
 import React, { useContext, useEffect, useState } from 'react';
 import SimpleBar from 'simplebar-react';
 
@@ -25,7 +25,7 @@ const EntityProperties: React.FC<EntityPropertiesProps> = (props) => {
     if(razorContext.observers.selected.entity) {
       core.getSceneManager().getActive().get(razorContext.observers.selected.entity)
         .getTransform()
-        .setTranslation(new Vec3(x, y, z))
+        .setTranslation(new Vector3(x, y, z))
     }
   }
 
@@ -33,7 +33,7 @@ const EntityProperties: React.FC<EntityPropertiesProps> = (props) => {
     if(razorContext.observers.selected.entity) {
       core.getSceneManager().getActive().get(razorContext.observers.selected.entity)
         .getTransform()
-        .setRotation(new Vec3(x, y, z))
+        .setRotation(new Orientation(x, y, z))
     }
   }
 
@@ -41,7 +41,7 @@ const EntityProperties: React.FC<EntityPropertiesProps> = (props) => {
     if(razorContext.observers.selected.entity) {
       core.getSceneManager().getActive().get(razorContext.observers.selected.entity)
         .getTransform()
-        .setScale(new Vec3(x, y, z))
+        .setScale(new Vector3(x, y, z))
     }
   }
 
@@ -106,7 +106,7 @@ const EntityProperties: React.FC<EntityPropertiesProps> = (props) => {
           <Property 
             title="Scale" 
             vector={selectedEntity?.getTransform().getScale()} 
-            defaultValue={new Vec3(1, 1, 1)}
+            defaultValue={new Vector3(1, 1, 1)}
             setProperty={setScale}  
           />
         </>)

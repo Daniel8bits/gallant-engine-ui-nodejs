@@ -1,7 +1,7 @@
-import ResourceLoader from '@engine/core/ResourceLoader';
-import Transform from '@engine/math/Transform';
+
 import RazorInterfaceCore from '@interface-core/RazorInterfaceCore';
 import { RazorActions } from '@store/Razor.store';
+import Transform from 'gallant-engine/dist/src/math/Transform';
 import produce from 'immer';
 import React, { useEffect, useMemo, useReducer } from 'react';
 import { useDispatch } from 'react-redux';
@@ -173,25 +173,29 @@ function initializeEngine(
     
   }
 
+  const core = new RazorInterfaceCore(
+    entityManagerObserver,
+    cameraObserver,
+    cameraManagerObserver, 
+  )
 
   dispatch(RazorActions.init({
-    gameCore: new RazorInterfaceCore(
-      entityManagerObserver,
-      cameraObserver,
-      cameraManagerObserver, 
-    ),
+    gameCore: core,
     canvas: ref.current
   }))
-  ResourceLoader.setVAOObserver((keys) => {
+
+  core.onVAOLoaded((keys) => {
     observerDispatch({
       type: RazorObserverActions.updateObserver,
       payload: [ERazorResources.VAO, keys]
     })
   })
+
   observerDispatch({
     type: RazorObserverActions.createObserver,
     payload: ERazorResources.VAO
   })
+
   dispatch(RazorActions.start())
 
   cameraManagerObserver(['camera0'])

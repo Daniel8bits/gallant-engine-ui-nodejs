@@ -1,13 +1,14 @@
-import Renderer from "@engine/renderer/Renderer";
-import GLUtils, { gl } from "@engine/gl/GLUtils";
-import Texture from "@engine/tools/Texture";
-import SceneManager from "@engine/core/SceneManager";
-import Razor from "@engine/core/Razor";
-import Shader from "@engine/tools/Shader";
-import ResourceLoader from "@engine/core/ResourceLoader";
+import Renderer from "gallant-engine/dist/src/renderer/Renderer";
+import SceneManager from "gallant-engine/dist/src/core/scenes/SceneManager";
+import Texture from "gallant-engine/dist/src/appearance/Texture";
+import Shader from "gallant-engine/dist/src/appearance/Shader";
+import { Matrix4, toRadians } from "gallant-engine/dist/src/math/LA";
+import GLUtils, { gl } from "gallant-engine/dist/src/gl/GLUtils";
+import ResourceManager from "gallant-engine/dist/src/core/ResourceManager";
+import Razor from "gallant-engine/dist/src/core/Razor";
+
 import SimpleEntity from "@interface-core/entities/SimpleEntity";
 import CameraManager from "@interface-core/CameraManager";
-import Mat4 from "@engine/math/Mat4";
 
 class EditorRenderer extends Renderer {
 
@@ -17,16 +18,22 @@ class EditorRenderer extends Renderer {
     private _texture: Texture
     private _shader: Shader
 
-    private _projection: Mat4;
+    private _projection: Matrix4;
     private _cameraManager: CameraManager
 
     private _id: number
 
     constructor(cameraManager: CameraManager, sceneManager: SceneManager) {
-      super('editor_renderer')
+      super('editor_renderer', cameraManager.getActive())
       this._cameraManager = cameraManager
       const vd = gl.getParameter(gl.VIEWPORT)
-      this._projection = Mat4.perspective(70, vd[2] / vd[3], 1, 1000)
+
+      this._projection = new Matrix4().perspective({
+        fovy: toRadians(70), 
+        aspect: vd[2] / vd[3], 
+        near: 1, 
+        far: 1000
+      })
 
       this._sceneManager = sceneManager
       this._framebuffer = gl.createFramebuffer()
@@ -35,7 +42,7 @@ class EditorRenderer extends Renderer {
       this._texture.setWidth(Razor.CANVAS.width)
       this._texture.setHeight(Razor.CANVAS.height)
       this._texture.create()
-      this._shader = ResourceLoader.getShader('editor-shader')
+      this._shader = ResourceManager.getShader('editor-shader')
       this._id = 0;
     }
 
@@ -48,10 +55,7 @@ class EditorRenderer extends Renderer {
         this._shader.bind();
   
         this._shader.setMatrix4x4('u_projection', this._projection);
-        this._shader.setMatrix4x4('u_view', Mat4.view(
-          this._cameraManager.getActive().getTransform().getTranslation(),
-          this._cameraManager.getActive().getTransform().getRotation(),
-        ));
+        this._shader.setMatrix4x4('u_view', this.getCamera().getView());
   
         this._id = 0;
   

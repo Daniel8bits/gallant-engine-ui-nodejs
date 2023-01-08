@@ -19,6 +19,7 @@ specifiers:
   '@typescript-eslint/parser': ^5.48.0
   autoprefixer: ^10.4.13
   axios: ^1.2.2
+  babel-plugin-module-resolver: ^4.1.0
   bigfloat: ^0.1.1
   eslint: ^8.31.0
   eslint-config-airbnb: ^19.0.4
@@ -46,6 +47,7 @@ specifiers:
   saga-slice: ^1.3.0
   sass: ^1.57.1
   simplebar-react: ^2.4.3
+  tsconfig-paths-webpack-plugin: ^4.0.0
   typesafe-actions: ^5.1.0
   typescript: ^4.9.4
   web-vitals: ^3.1.0
@@ -58,7 +60,7 @@ dependencies:
   '@testing-library/user-event': 14.4.3_ua4wuun3fnehcjqtqj2e2ldgpe
   axios: 1.2.2
   bigfloat: 0.1.1
-  gallant-engine: github.com/Daniel8bits/gallant-gameengine-nodejs/8695db287f30fbc5f6b2346c082b55a170d33695_webpack@5.75.0
+  gallant-engine: github.com/Daniel8bits/gallant-gameengine-nodejs/45f54fa22a41bb8be4622506d0e269155834b165_webpack@5.75.0
   immer: 9.0.17
   obj-file-parser: 0.5.3
   react: 18.2.0
@@ -87,6 +89,7 @@ devDependencies:
   '@typescript-eslint/eslint-plugin': 5.48.0_k73wpmdolxikpyqun3p36akaaq
   '@typescript-eslint/parser': 5.48.0_iukboom6ndih5an6iafl45j2fe
   autoprefixer: 10.4.13_postcss@8.4.21
+  babel-plugin-module-resolver: 4.1.0
   eslint: 8.31.0
   eslint-config-airbnb: 19.0.4_kdrd7zxcgo7evu26hvr6zfy33i
   eslint-config-prettier: 8.6.0_eslint@8.31.0
@@ -101,6 +104,7 @@ devDependencies:
   react-app-alias: 2.2.2
   react-app-rewired: 2.2.1_react-scripts@5.0.1
   sass: 1.57.1
+  tsconfig-paths-webpack-plugin: 4.0.0
   typescript: 4.9.4
   webpack: 5.75.0
 
@@ -3576,6 +3580,17 @@ packages:
       cosmiconfig: 7.1.0
       resolve: 1.22.1
 
+  /babel-plugin-module-resolver/4.1.0:
+    resolution: {integrity: sha512-MlX10UDheRr3lb3P0WcaIdtCSRlxdQsB1sBqL7W0raF070bGl1HQQq5K3T2vf2XAYie+ww+5AKC/WrkjRO2knA==}
+    engines: {node: '>= 8.0.0'}
+    dependencies:
+      find-babel-config: 1.2.0
+      glob: 7.2.3
+      pkg-up: 3.1.0
+      reselect: 4.1.7
+      resolve: 1.22.1
+    dev: true
+
   /babel-plugin-named-asset-import/0.3.8_@babel+core@7.20.12:
     resolution: {integrity: sha512-WXiAc++qo7XcJ1ZnTYGtLxmBCVbddAml3CEXgWaBzNzLNoxtQ8AiGEFDMOhot9XjTCQbvP5E77Fj9Gk924f00Q==}
     peerDependencies:
@@ -5265,6 +5280,14 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
+  /find-babel-config/1.2.0:
+    resolution: {integrity: sha512-jB2CHJeqy6a820ssiqwrKMeyC6nNdmrcgkKWJWmpoxpE8RKciYJXCcXRq1h2AzCo5I5BJeN2tkGEO3hLTuePRA==}
+    engines: {node: '>=4.0.0'}
+    dependencies:
+      json5: 0.5.1
+      path-exists: 3.0.0
+    dev: true
+
   /find-cache-dir/3.3.2:
     resolution: {integrity: sha512-wXZV5emFEjrridIgED11OoUKLxiYjAcqot/NJdAkOhlJ+vGzwhOAfcG5OX1jP+S0PcjEn8bdMJv+g2jwQ3Onig==}
     engines: {node: '>=8'}
@@ -6756,6 +6779,11 @@ packages:
 
   /json-stable-stringify-without-jsonify/1.0.1:
     resolution: {integrity: sha512-Bdboy+l7tA3OGW6FjyFHWkP5LuByj1Tk33Ljyq0axyzdk9//JSi2u3fP1QSmd1KNwq6VOKYGlAu87CisVir6Pw==}
+
+  /json5/0.5.1:
+    resolution: {integrity: sha512-4xrs1aW+6N5DalkqSVA8fxh458CXvR99WU8WLKmq4v8eWAL86Xo3BVqyd3SkA9wEVjCMqyvvRRkshAdOnBp5rw==}
+    hasBin: true
+    dev: true
 
   /json5/1.0.2:
     resolution: {integrity: sha512-g1MWMLBiz8FKi1e4w0UyVL3w+iJceWAFBAaBnnGKOpNa5f8TLktkbre1+s6oICydWAm+HRUGTmI+//xv2hvXYA==}
@@ -8657,7 +8685,6 @@ packages:
 
   /reselect/4.1.7:
     resolution: {integrity: sha512-Zu1xbUt3/OPwsXL46hvOOoQrap2azE7ZQbokq61BQfiXvhewsKDwhMeZjTX9sX0nvw1t/U5Audyn1I9P/m9z0A==}
-    dev: false
 
   /resolve-cwd/3.0.0:
     resolution: {integrity: sha512-OrZaX2Mb+rJCpH/6CpSqt9xFVpN++x01XnN2ie9g6P5/3xelLAkXWVADpdz1IHD/KFfEXyE6V0U01OQ3UO2rEg==}
@@ -9463,6 +9490,15 @@ packages:
   /tryer/1.0.1:
     resolution: {integrity: sha512-c3zayb8/kWWpycWYg87P71E1S1ZL6b6IJxfb5fvsUgsf0S2MVGaDhDXXjDMpdCpfWXqptc+4mXwmiy1ypXqRAA==}
 
+  /tsconfig-paths-webpack-plugin/4.0.0:
+    resolution: {integrity: sha512-fw/7265mIWukrSHd0i+wSwx64kYUSAKPfxRDksjKIYTxSAp9W9/xcZVBF4Kl0eqQd5eBpAQ/oQrc5RyM/0c1GQ==}
+    engines: {node: '>=10.13.0'}
+    dependencies:
+      chalk: 4.1.2
+      enhanced-resolve: 5.12.0
+      tsconfig-paths: 4.1.2
+    dev: true
+
   /tsconfig-paths/3.14.1:
     resolution: {integrity: sha512-fxDhWnFSLt3VuTwtvJt5fpwxBHg5AdKWMsgcPOOIilyjymcYVZoCQF8fvFRezCNfblEXmi+PcM1eYHeOAgXCOQ==}
     dependencies:
@@ -9470,6 +9506,15 @@ packages:
       json5: 1.0.2
       minimist: 1.2.7
       strip-bom: 3.0.0
+
+  /tsconfig-paths/4.1.2:
+    resolution: {integrity: sha512-uhxiMgnXQp1IR622dUXI+9Ehnws7i/y6xvpZB9IbUVOPy0muvdvgXeZOn88UcGPiT98Vp3rJPTa8bFoalZ3Qhw==}
+    engines: {node: '>=6'}
+    dependencies:
+      json5: 2.2.3
+      minimist: 1.2.7
+      strip-bom: 3.0.0
+    dev: true
 
   /tslib/1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
@@ -10171,9 +10216,9 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  github.com/Daniel8bits/gallant-gameengine-nodejs/8695db287f30fbc5f6b2346c082b55a170d33695_webpack@5.75.0:
-    resolution: {tarball: https://codeload.github.com/Daniel8bits/gallant-gameengine-nodejs/tar.gz/8695db287f30fbc5f6b2346c082b55a170d33695}
-    id: github.com/Daniel8bits/gallant-gameengine-nodejs/8695db287f30fbc5f6b2346c082b55a170d33695
+  github.com/Daniel8bits/gallant-gameengine-nodejs/45f54fa22a41bb8be4622506d0e269155834b165_webpack@5.75.0:
+    resolution: {tarball: https://codeload.github.com/Daniel8bits/gallant-gameengine-nodejs/tar.gz/45f54fa22a41bb8be4622506d0e269155834b165}
+    id: github.com/Daniel8bits/gallant-gameengine-nodejs/45f54fa22a41bb8be4622506d0e269155834b165
     name: gallant-engine
     version: 1.0.0
     dependencies:

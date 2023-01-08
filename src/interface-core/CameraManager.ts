@@ -1,4 +1,4 @@
-import RenderStrategy from "@engine/renderer/RenderStrategy";
+import RenderStrategy from "gallant-engine/dist/src/renderer/RenderStrategy";
 import CanvasCamera from "./CanvasCamera";
 
 

@@ -1,15 +1,14 @@
-import Entity from "@engine/core/Entity";
-import Razor from "@engine/core/Razor";
-import SceneManager from "@engine/core/SceneManager";
-import Mat4 from "@engine/math/Mat4";
-import Transform from "@engine/math/Transform";
-import Camera from "../engine/core/Camera";
-import InputManager, {Keys} from "../engine/core/InputManager";
-import { toRadian } from "../engine/math/math";
-import Vec3 from "../engine/math/Vec3";
+
+import Entity from "gallant-engine/dist/src/core/entities/Entity";
+import Camera from "gallant-engine/dist/src/core/Camera";
+import Transform from "gallant-engine/dist/src/math/Transform";
+import Orientation from "gallant-engine/dist/src/math/Orientation";
+import {Vector3} from "gallant-engine/dist/src/math/LA";
+import Razor from "gallant-engine/dist/src/core/Razor";
+import { toRadians } from "gallant-engine/dist/src/math/math";
+import InputManager, { Keys } from "gallant-engine/dist/src/core/InputManager";
 import CameraManager from "./CameraManager";
 import SimpleEntity from "./entities/SimpleEntity";
-
 
 class CanvasCamera extends Camera {
 
@@ -39,7 +38,7 @@ class CanvasCamera extends Camera {
         cameraManager: CameraManager,
         cameraObserver: (transform: Transform) => void
     ) {
-        super(new Vec3(), new Vec3())
+        super(new Vector3(), new Orientation())
         this._name = name
         this._cameraManager = cameraManager
         this._speed = 10
@@ -72,8 +71,8 @@ class CanvasCamera extends Camera {
     private _firstPersonMovement(delta: number): void {
 
         if(this._cameraManager.getActive().getName() === this._name) {
-            const x = Math.sin(toRadian(this.getTransform().getRotation().y)) * this._speed * delta;
-            const z = Math.cos(toRadian(this.getTransform().getRotation().y)) * this._speed * delta;
+            const x = Math.sin(toRadians(this.getTransform().getRotation().y)) * this._speed * delta;
+            const z = Math.cos(toRadians(this.getTransform().getRotation().y)) * this._speed * delta;
     
             if(InputManager.isKeyPressed(Keys.KEY_W)){ // FRONT
                 const translation = this.getTransform().getTranslation()
@@ -120,7 +119,7 @@ class CanvasCamera extends Camera {
                 const dy = InputManager.getMouseDY() 
         
                 this.getTransform().setRotation(
-                    this.getTransform().getRotation().sum(new Vec3(
+                    this.getTransform().getRotation().add(new Orientation(
                         dy * this._sensitivity * delta, 
                         dx * this._sensitivity * delta,
                         0
@@ -159,15 +158,15 @@ class CanvasCamera extends Camera {
             }
         }
 
-        const horizontalDistance = 10 * Math.cos(toRadian(this._pitch))
-        const verticalDistance = 10 * Math.sin(toRadian(this._pitch))
+        const horizontalDistance = 10 * Math.cos(toRadians(this._pitch))
+        const verticalDistance = 10 * Math.sin(toRadians(this._pitch))
         const theta = this._lockedIn.getTransform().getRotation().y + this._angleAround
-        const offsetX = horizontalDistance * Math.sin(toRadian(theta))
-        const offsetZ = horizontalDistance * Math.cos(toRadian(theta))
+        const offsetX = horizontalDistance * Math.sin(toRadians(theta))
+        const offsetZ = horizontalDistance * Math.cos(toRadians(theta))
         const entityTranslation = this._lockedIn.getTransform().getTranslation()
 
         if(!this._lookAt) {
-            this.getTransform().setTranslation(new Vec3(
+            this.getTransform().setTranslation(new Vector3(
                 (entityTranslation.x + offsetX) * -1,
                 (entityTranslation.y - verticalDistance) * -1,
                 (entityTranslation.z + offsetZ) * -1
@@ -178,7 +177,7 @@ class CanvasCamera extends Camera {
             InputManager.isMouseLeft() && !this._lookAt &&
             this._cameraManager.getActive().getName() === this._name
         ) { // MOUSE
-            this.getTransform().setRotation(new Vec3(
+            this.getTransform().setRotation(new Orientation(
                 -this._pitch,
                 180+theta
             ))
@@ -186,7 +185,7 @@ class CanvasCamera extends Camera {
 
         if(this._lookAt) { // MOUSE
             const theta = this._lockedIn.getTransform().getRotation().y + this._angleAround*4
-            this.getTransform().setRotation(new Vec3(
+            this.getTransform().setRotation(new Orientation(
                 this._pitch,
                 -theta
             ))
@@ -212,17 +211,10 @@ class CanvasCamera extends Camera {
             translation.x *= -1
             translation.z += 10
             this.getTransform().setTranslation(translation)
-            this.getTransform().setRotation(new Vec3())
+            this.getTransform().setRotation(new Orientation())
             this._angleAround = 180;
         }
         
-    }
-
-    public getView(): Mat4 {
-        return Mat4.view(
-            this.getTransform().getTranslation(),
-            this.getTransform().getRotation(),
-        )
     }
 
     public getLockedIn(): Entity {

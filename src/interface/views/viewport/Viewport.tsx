@@ -1,6 +1,6 @@
 import useGameCore from '@hooks/useGameCore';
 
-import React, { forwardRef, useContext, useEffect, useRef } from 'react';
+import React, { forwardRef, useContext } from 'react';
 import { RazorContext, RazorObserverActions } from '@providers/RazorProvider';
 
 interface ViewportProps {

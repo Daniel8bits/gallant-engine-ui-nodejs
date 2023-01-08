@@ -1,6 +1,6 @@
 import useGameCore from '@hooks/useGameCore';
 import { RazorContext, RazorObserverActions } from '@providers/RazorProvider';
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 
 import {FaTrashAlt} from 'react-icons/fa'
 import SimpleBar from 'simplebar-react';

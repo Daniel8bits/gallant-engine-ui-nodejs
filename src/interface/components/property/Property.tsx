@@ -1,12 +1,11 @@
-import Vec3 from '@engine/math/Vec3';
 import UIInputSlider from '@ui/inputslider/UIInputSlider';
-//import { BigFloat32 } from 'bigfloat';
+import { Vector3 } from 'gallant-engine/dist/src/math/LA';
 import React, { useEffect, useState } from 'react';
 
 interface PropertyProps {
   title: string
-  vector?: Vec3
-  defaultValue?: Vec3
+  vector?: Vector3
+  defaultValue?: Vector3
   setProperty: (x: number, y: number, z: number) => void
   disabled?: boolean
 }

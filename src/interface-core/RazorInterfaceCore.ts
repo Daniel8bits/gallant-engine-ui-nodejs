@@ -1,29 +1,33 @@
-import GameCore from "@engine/core/GameCore";
-import Razor from "@engine/core/Razor";
-import ResourceLoader from "@engine/core/ResourceLoader";
-import Scene from "@engine/core/Scene";
-import Vec3 from "@engine/math/Vec3";
-import Transform from '@engine/math/Transform';
-import FileUtils from "@engine/utils/FileUtils";
-import { gl } from "@engine/gl/GLUtils";
+import GameCore from 'gallant-engine/dist/src/core/GameCore'
+import Razor from "gallant-engine/dist/src/core/Razor";
+import Transform from 'gallant-engine/dist/src/math/Transform';
+import Scene from 'gallant-engine/dist/src/core/scenes/Scene';
+import ResourceManager from 'gallant-engine/dist/src/core/ResourceManager'
+import DefaultMaterial from 'gallant-engine/dist/src/appearance/material/DefaultMaterial'
+import { Vector3 } from 'gallant-engine/dist/src/math/LA';
+import Orientation from 'gallant-engine/dist/src/math/Orientation';
+import FileUtils from 'gallant-engine/dist/src/utils/FileUtils';
+import { gl } from 'gallant-engine/dist/src/gl/GLUtils';
+
 import CanvasCamera from "./CanvasCamera";
 import SimpleEntity from "./entities/SimpleEntity";
 import EditorRenderer from "./renderers/EditorRenderer";
 import SimpleRenderer from "./renderers/SimpleRenderer";
 import CameraManager from './CameraManager';
 
-
 class RazorInterfaceCore extends GameCore {
 
   private _editorRenderer: EditorRenderer
 
-  private _cameraManager: CameraManager
+  private _cameraManager!: CameraManager
 
   private _sceneObserver: (keys: string[]) => void;
   private _cameraManagerObserver: (keys: string[]) => void
   private _cameraObserver: (transform: Transform) => void
   private _selectedEntity: string
   private _selectedCamera: string
+
+  private _onVAOLoaded: (keys: string[]) => void
 
   public constructor(
     sceneObserver: (keys: string[]) => void,
@@ -35,10 +39,13 @@ class RazorInterfaceCore extends GameCore {
     this._cameraManagerObserver = cameraManagerObserver
     this._cameraObserver = cameraObserver
     this._selectedEntity = null
-    this._cameraManager = new CameraManager(this.getRenderStrategy())
   }
   
   public start(): void {
+
+    const scene1 = new Scene('scene1')
+    this.getSceneManager().add(scene1, true)
+    this._cameraManager = new CameraManager(scene1.getRenderStrategy())
 
     this.createNewCamera()
     this.setSelectedCamera('camera0')
@@ -46,7 +53,7 @@ class RazorInterfaceCore extends GameCore {
 
     // ========= SHADER ==========
 
-    ResourceLoader.loadShader([
+    ResourceManager.loadShader([
       {
         name: 'shader1',
         vertexShaderPathname: './resources/shader/vert.glsl', 
@@ -67,7 +74,22 @@ class RazorInterfaceCore extends GameCore {
       shader.create();
     })
 
-    ResourceLoader.loadVAO([
+    ResourceManager.addMaterials([
+      new DefaultMaterial(
+        'material1',
+        ResourceManager.getShader('shader1')
+      ),
+      new DefaultMaterial(
+        'editor-material',
+        ResourceManager.getShader('editor-shader')
+      ),
+      new DefaultMaterial(
+        'camera-material',
+        ResourceManager.getShader('camera-shader'),
+      )
+    ])
+
+    ResourceManager.loadVAO([
       {
         name: 'cube',
         objectData: './resources/objects/cube/cube.obj'
@@ -118,9 +140,9 @@ class RazorInterfaceCore extends GameCore {
     })
 
     const simpleRenderer = new SimpleRenderer(this._cameraManager);
-    this.getRenderStrategy().add(simpleRenderer)
+    scene1.getRenderStrategy().add(simpleRenderer)
 
-    this.getSceneManager().add(new Scene('scene1'), true)
+    
 
     this._editorRenderer = new EditorRenderer(this._cameraManager, this.getSceneManager())
 
@@ -133,9 +155,9 @@ class RazorInterfaceCore extends GameCore {
     this._cameraManager.update(time, delta);
   }
 
-  public render(): void {
+  public render(delta: number): void {
     this._editorRenderer.render();
-    super.render();
+    super.render(delta);
   }
 
   public createNewEntity(vaoName: string): void {
@@ -154,15 +176,15 @@ class RazorInterfaceCore extends GameCore {
     scene
       .add(new SimpleEntity(
         name,
-        ResourceLoader.getVAO(vaoName), 
-        ResourceLoader.getShader('shader1'),
-        this.getRenderStrategy().get('renderer1')
+        ResourceManager.getVAO(vaoName), 
+        ResourceManager.getMaterial('material1'),
+        scene.getRenderStrategy().get('renderer1')
       ))
       .get(name)
       .getTransform()
-      .setTranslation(camera.getTranslation().invert())
-    scene.get(name).getTransform().setRotation(new Vec3(0, 0, 0))
-    scene.get(name).getTransform().setScale(new Vec3(1, 1, 1))
+      .setTranslation(new Vector3(camera.getTranslation().reverse()))
+    scene.get(name).getTransform().setRotation(new Orientation(0, 0, 0))
+    scene.get(name).getTransform().setScale(new Vector3(1, 1, 1))
 
     if(this._sceneObserver) {
       this._sceneObserver(scene.getKeys())
@@ -240,9 +262,9 @@ class RazorInterfaceCore extends GameCore {
       .add(new CanvasCamera(name, this._cameraManager, this._cameraObserver))
       .get(name)
       .getTransform()
-      .setTranslation(new Vec3(0, 0, 0))
-    this.getCameraManager().get(name).getTransform().setRotation(new Vec3(0, 0, 0))
-    this.getCameraManager().get(name).getTransform().setScale(new Vec3(1, 1, 1))
+      .setTranslation(new Vector3(0, 0, 0))
+    this.getCameraManager().get(name).getTransform().setRotation(new Orientation(0, 0, 0))
+    this.getCameraManager().get(name).getTransform().setScale(new Vector3(1, 1, 1))
 
     if(this._sceneObserver) {
       this._cameraManagerObserver(this.getCameraManager().getKeys())
@@ -362,24 +384,26 @@ class RazorInterfaceCore extends GameCore {
             return '';
           })();
 
+          const scene = this.getSceneManager().getActive()
+
           const entity = new SimpleEntity(
             key,
-            ResourceLoader.getVAO(vaoName), 
-            ResourceLoader.getShader('shader1'),
-            this.getRenderStrategy().get('renderer1')
+            ResourceManager.getVAO(vaoName), 
+            ResourceManager.getMaterial('material1'),
+            scene.getRenderStrategy().get('renderer1')
           )
 
-          entity.getTransform().setTranslation(new Vec3(
+          entity.getTransform().setTranslation(new Vector3(
             data.translation.x,
             data.translation.y,
             data.translation.z,
           ))
-          entity.getTransform().setRotation(new Vec3(
+          entity.getTransform().setRotation(new Orientation(
             data.rotation.x,
             data.rotation.y,
             data.rotation.z,
           ))
-          entity.getTransform().setScale(new Vec3(
+          entity.getTransform().setScale(new Vector3(
             data.scale.x,
             data.scale.y,
             data.scale.z,
@@ -410,6 +434,10 @@ class RazorInterfaceCore extends GameCore {
 
     gl.disable(gl.CULL_FACE)
 
+  }
+
+  public onVAOLoaded(callback: (keys: string[]) => void) {
+    this._onVAOLoaded = callback
   }
 
 }

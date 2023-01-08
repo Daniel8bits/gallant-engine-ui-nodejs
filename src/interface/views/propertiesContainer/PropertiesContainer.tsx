@@ -1,14 +1,8 @@
 import React, { useState } from 'react';
-import {
-  BsCameraReels
-} from 'react-icons/bs'
-import {
-  BiCube
-} from 'react-icons/bi'
+import { BsCameraReels } from 'react-icons/bs'
+import { BiCube } from 'react-icons/bi'
 import EntityProperties from '@components/entityProperties/EntityProperties';
 import CameraProperties from '@components/cameraProperties/CameraProperties';
-
-
 
 interface PropertiesContainerProps {
   

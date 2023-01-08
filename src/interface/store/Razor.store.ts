@@ -1,4 +1,4 @@
-import Razor from '@engine/core/Razor';
+import Razor from 'gallant-engine/dist/src/core/Razor';
 import RazorInterfaceCore from '@interface-core/RazorInterfaceCore';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 

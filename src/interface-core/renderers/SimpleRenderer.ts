@@ -1,38 +1,34 @@
+import Renderer from "gallant-engine/dist/src/renderer/Renderer";
+import { Matrix4, toRadians } from "gallant-engine/dist/src/math/LA";
+import GLUtils, { gl } from "gallant-engine/dist/src/gl/GLUtils";
+import ResourceManager from "gallant-engine/dist/src/core/ResourceManager";
+import Entity from "gallant-engine/dist/src/core/entities/Entity";
+
 import SimpleEntity from "@interface-core/entities/SimpleEntity";
-import Renderer from "@engine/renderer/Renderer";
-import ResourceLoader from "@engine/core/ResourceLoader";
-import GLUtils, { gl } from "@engine/gl/GLUtils";
-import Mat4 from "@engine/math/Mat4";
-import Entity from "@engine/core/Entity";
 import CameraManager from "@interface-core/CameraManager";
 
 class SimpleRenderer extends Renderer {
 
-    private _projection: Mat4;
+    private _projection: Matrix4;
     private _cameraManager: CameraManager
 
     constructor(cameraManager: CameraManager) {
-        super('renderer1')
+        super('renderer1', cameraManager.getActive())
         this._cameraManager = cameraManager
         const vd = gl.getParameter(gl.VIEWPORT)
-        this._projection = Mat4.perspective(60, vd[2] / vd[3], 1, 1000)
-        //this._projection = Mat4.perspective(70, window.innerWidth / window.innerHeight, 1, 1000)
-        /*
-        this._ortho = Mat4.orthographic(
-            0, 
-            window.innerWidth,
-            0,
-            window.innerHeight,
-            -1,
-            100
-        );
-        */
+
+        this._projection = new Matrix4().perspective({
+            fovy: toRadians(70), 
+            aspect: vd[2] / vd[3], 
+            near: 1, 
+            far: 1000
+          })
     }
 
     public render() {
 
         if(this._cameraManager.getActive()) {
-            ResourceLoader.forEachShader((shader) => {
+            ResourceManager.forEachShader((shader) => {
                 shader.bind();
                 shader.setMatrix4x4('u_projection', this._projection);
                 const view = this._cameraManager.getActive().getView()
@@ -54,8 +50,8 @@ class SimpleRenderer extends Renderer {
 
     }
     private _renderCameras(): void {
-        const shader = ResourceLoader.getShader('camera-shader')
-        const vao = ResourceLoader.getVAO('camera')
+        const shader = ResourceManager.getShader('camera-shader')
+        const vao = ResourceManager.getVAO('camera')
         shader.bind();
         shader.setMatrix4x4('u_projection', this._projection);
         const view = this._cameraManager.getActive().getView()
@@ -64,11 +60,7 @@ class SimpleRenderer extends Renderer {
             if(camera.getName() === this._cameraManager.getActive().getName()) {
                 return;
             }
-            shader.setMatrix4x4('u_transform', Mat4.transform(
-                camera.getTransform().getTranslation().mult(-1),
-                camera.getTransform().getRotation().mult(-1),
-                camera.getTransform().getScale()
-            ));            
+            shader.setMatrix4x4('u_transform', camera.getTransform().toMatrix());
             vao.bind()
             GLUtils.draw(vao.getLength());
             vao.unbind();
