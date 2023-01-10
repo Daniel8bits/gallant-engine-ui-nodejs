@@ -1,5 +1,5 @@
 import GameCore from 'gallant-engine/dist/src/core/GameCore'
-import Razor from "gallant-engine/dist/src/core/Razor";
+import Gallant from "gallant-engine/dist/src/core/Gallant";
 import Transform from 'gallant-engine/dist/src/math/Transform';
 import Scene from 'gallant-engine/dist/src/core/scenes/Scene';
 import ResourceManager from 'gallant-engine/dist/src/core/ResourceManager'
@@ -9,39 +9,45 @@ import Orientation from 'gallant-engine/dist/src/math/Orientation';
 import FileUtils from 'gallant-engine/dist/src/utils/FileUtils';
 import { gl } from 'gallant-engine/dist/src/gl/GLUtils';
 
+import { GallantStore } from '@store/Global.store';
+
 import CanvasCamera from "./CanvasCamera";
 import SimpleEntity from "./entities/SimpleEntity";
 import EditorRenderer from "./renderers/EditorRenderer";
 import SimpleRenderer from "./renderers/SimpleRenderer";
 import CameraManager from './CameraManager';
 
-class RazorInterfaceCore extends GameCore {
+class GallantInterfaceCore extends GameCore {
 
   private _editorRenderer: EditorRenderer
 
   private _cameraManager!: CameraManager
 
-  private _sceneObserver: (keys: string[]) => void;
-  private _cameraManagerObserver: (keys: string[]) => void
-  private _cameraObserver: (transform: Transform) => void
+  //private _sceneObserver: (keys: string[]) => void;
+  //private _cameraManagerObserver: (keys: string[]) => void
+  //private _cameraObserver: (transform: Transform) => void
   private _selectedEntity: string
   private _selectedCamera: string
 
   private _onVAOLoaded: (keys: string[]) => void
 
   public constructor(
+    /*
     sceneObserver: (keys: string[]) => void,
     cameraObserver: (transform: Transform) => void,
     cameraManagerObserver: (keys: string[]) => void
+    */
   ) {
     super()
-    this._sceneObserver = sceneObserver
-    this._cameraManagerObserver = cameraManagerObserver
-    this._cameraObserver = cameraObserver
+    //this._sceneObserver = sceneObserver
+    //this._cameraManagerObserver = cameraManagerObserver
+    //this._cameraObserver = cameraObserver
     this._selectedEntity = null
   }
   
   public start(): void {
+
+    console.log('gallant start')
 
     const scene1 = new Scene('scene1')
     this.getSceneManager().add(scene1, true)
@@ -89,7 +95,7 @@ class RazorInterfaceCore extends GameCore {
       )
     ])
 
-    ResourceManager.loadVAO([
+    const vaos = [
       {
         name: 'cube',
         objectData: './resources/objects/cube/cube.obj'
@@ -134,17 +140,21 @@ class RazorInterfaceCore extends GameCore {
         name: 'door-panel',
         objectData: './resources/objects/panels/door-panel.obj'
       },
-    ])
+    ]
+
+    ResourceManager.loadVAO(vaos)
     .forEachVAO((vao) => {
       vao.create();
     })
 
+    this._onVAOLoaded(vaos.map(v => v.name))
+
     const simpleRenderer = new SimpleRenderer(this._cameraManager);
     scene1.getRenderStrategy().add(simpleRenderer)
 
-    
-
     this._editorRenderer = new EditorRenderer(this._cameraManager, this.getSceneManager())
+
+    this._cameraManagerObserver(['camera0'])
 
   }
 
@@ -203,16 +213,16 @@ class RazorInterfaceCore extends GameCore {
 
   public selectEntity(mouseX: number, mouseY: number): string {
 
-    mouseX -= Razor.CANVAS.offsetLeft
-    mouseY -= Razor.CANVAS.offsetTop
+    mouseX -= Gallant.CANVAS.offsetLeft
+    mouseY -= Gallant.CANVAS.offsetTop
 
     const data = this._editorRenderer.getTexture().getData()
 
     const color = [
-      data.at((data.length - mouseY * Razor.CANVAS.width * 4 - 1) - (Razor.CANVAS.width - mouseX) * 4 - 3),
-      data.at((data.length - mouseY * Razor.CANVAS.width * 4 - 1) - (Razor.CANVAS.width - mouseX) * 4 - 2),
-      data.at((data.length - mouseY * Razor.CANVAS.width * 4 - 1) - (Razor.CANVAS.width - mouseX) * 4 - 1),
-      data.at((data.length - mouseY * Razor.CANVAS.width * 4 - 1) - (Razor.CANVAS.width - mouseX) * 4),
+      data.at((data.length - mouseY * Gallant.CANVAS.width * 4 - 1) - (Gallant.CANVAS.width - mouseX) * 4 - 3),
+      data.at((data.length - mouseY * Gallant.CANVAS.width * 4 - 1) - (Gallant.CANVAS.width - mouseX) * 4 - 2),
+      data.at((data.length - mouseY * Gallant.CANVAS.width * 4 - 1) - (Gallant.CANVAS.width - mouseX) * 4 - 1),
+      data.at((data.length - mouseY * Gallant.CANVAS.width * 4 - 1) - (Gallant.CANVAS.width - mouseX) * 4),
     ]
 
     if(color[3] > 0) {
@@ -440,7 +450,32 @@ class RazorInterfaceCore extends GameCore {
     this._onVAOLoaded = callback
   }
 
+  private _sceneObserver(keys: string[]) {
+    GallantStore.addEntity({ entities: keys })
+  }
+
+  private _cameraManagerObserver(keys: string[]) {
+    GallantStore.addCamera({ cameras: keys })
+  } 
+
+  private _cameraObserver(transform: Transform) {
+    const translation = transform.getTranslation()
+    const rotation = transform.getRotation()
+    GallantStore.updateCamera({
+      translation: [
+        translation.x,
+        translation.y,
+        translation.z
+      ],
+      rotation: [
+        rotation.x,
+        rotation.y,
+        rotation.z
+      ],
+    })
+  }
+
 }
 
 
-export default RazorInterfaceCore
+export default GallantInterfaceCore

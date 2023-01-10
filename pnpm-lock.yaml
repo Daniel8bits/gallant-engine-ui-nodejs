@@ -32,6 +32,7 @@ specifiers:
   eslint-plugin-react-hooks: ^4.6.0
   gallant-engine: github:Daniel8bits/gallant-gameengine-nodejs
   immer: ^9.0.17
+  jotai: ^1.12.1
   obj-file-parser: ^0.5.3
   postcss: ^8.4.21
   prettier: ^2.8.1
@@ -52,6 +53,7 @@ specifiers:
   typescript: ^4.9.4
   web-vitals: ^3.1.0
   webpack: ^5.75.0
+  zustand: ^4.2.0
 
 dependencies:
   '@reduxjs/toolkit': 1.9.1_k4ae6lp43ej6mezo3ztvx6pykq
@@ -60,8 +62,9 @@ dependencies:
   '@testing-library/user-event': 14.4.3_ua4wuun3fnehcjqtqj2e2ldgpe
   axios: 1.2.2
   bigfloat: 0.1.1
-  gallant-engine: github.com/Daniel8bits/gallant-gameengine-nodejs/45f54fa22a41bb8be4622506d0e269155834b165_webpack@5.75.0
+  gallant-engine: github.com/Daniel8bits/gallant-gameengine-nodejs/0bc02751e3b8708efafab23756a9655af84f0d68_webpack@5.75.0
   immer: 9.0.17
+  jotai: 1.12.1_2exiyaescjxorpwwmy4ejghgte
   obj-file-parser: 0.5.3
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
@@ -74,6 +77,7 @@ dependencies:
   simplebar-react: 2.4.3_biqbaboplfbrettd7655fr4n2y
   typesafe-actions: 5.1.0
   web-vitals: 3.1.0
+  zustand: 4.2.0_immer@9.0.17+react@18.2.0
 
 devDependencies:
   '@babel/core': 7.20.12
@@ -6696,6 +6700,47 @@ packages:
       - ts-node
       - utf-8-validate
 
+  /jotai/1.12.1_2exiyaescjxorpwwmy4ejghgte:
+    resolution: {integrity: sha512-t6gsYM1WkQHMOazaZYLykCA+fh9KPDGrA+tDYzDeV0268QsCqmX6S4lO46uswgt1LGUeG0EDFGuMd9ac8cWNTA==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      '@babel/core': '*'
+      '@babel/template': '*'
+      jotai-immer: '*'
+      jotai-optics: '*'
+      jotai-redux: '*'
+      jotai-tanstack-query: '*'
+      jotai-urql: '*'
+      jotai-valtio: '*'
+      jotai-xstate: '*'
+      jotai-zustand: '*'
+      react: '>=16.8'
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+      '@babel/template':
+        optional: true
+      jotai-immer:
+        optional: true
+      jotai-optics:
+        optional: true
+      jotai-redux:
+        optional: true
+      jotai-tanstack-query:
+        optional: true
+      jotai-urql:
+        optional: true
+      jotai-valtio:
+        optional: true
+      jotai-xstate:
+        optional: true
+      jotai-zustand:
+        optional: true
+    dependencies:
+      '@babel/core': 7.20.12
+      react: 18.2.0
+    dev: false
+
   /js-sdsl/4.2.0:
     resolution: {integrity: sha512-dyBIzQBDkCqCu+0upx25Y2jGdbTGxE9fshMsCdK0ViOongpV+n5tXRcZY9v7CaVQ79AGS9KA1KHtojxiM7aXSQ==}
 
@@ -10216,9 +10261,26 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  github.com/Daniel8bits/gallant-gameengine-nodejs/45f54fa22a41bb8be4622506d0e269155834b165_webpack@5.75.0:
-    resolution: {tarball: https://codeload.github.com/Daniel8bits/gallant-gameengine-nodejs/tar.gz/45f54fa22a41bb8be4622506d0e269155834b165}
-    id: github.com/Daniel8bits/gallant-gameengine-nodejs/45f54fa22a41bb8be4622506d0e269155834b165
+  /zustand/4.2.0_immer@9.0.17+react@18.2.0:
+    resolution: {integrity: sha512-eNwaDoD2FYVnMgtNxiMUhTJO780wonZUzJrPQTLYI0erSIMZF8cniWFW22kGQUECd8rdHRJ/ZJL2XO54c9Ttuw==}
+    engines: {node: '>=12.7.0'}
+    peerDependencies:
+      immer: '>=9.0'
+      react: '>=16.8'
+    peerDependenciesMeta:
+      immer:
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      immer: 9.0.17
+      react: 18.2.0
+      use-sync-external-store: 1.2.0_react@18.2.0
+    dev: false
+
+  github.com/Daniel8bits/gallant-gameengine-nodejs/0bc02751e3b8708efafab23756a9655af84f0d68_webpack@5.75.0:
+    resolution: {tarball: https://codeload.github.com/Daniel8bits/gallant-gameengine-nodejs/tar.gz/0bc02751e3b8708efafab23756a9655af84f0d68}
+    id: github.com/Daniel8bits/gallant-gameengine-nodejs/0bc02751e3b8708efafab23756a9655af84f0d68
     name: gallant-engine
     version: 1.0.0
     dependencies:

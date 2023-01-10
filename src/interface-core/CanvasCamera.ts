@@ -4,7 +4,7 @@ import Camera from "gallant-engine/dist/src/core/Camera";
 import Transform from "gallant-engine/dist/src/math/Transform";
 import Orientation from "gallant-engine/dist/src/math/Orientation";
 import {Vector3} from "gallant-engine/dist/src/math/LA";
-import Razor from "gallant-engine/dist/src/core/Razor";
+import Gallant from "gallant-engine/dist/src/core/Gallant";
 import { toRadians } from "gallant-engine/dist/src/math/math";
 import InputManager, { Keys } from "gallant-engine/dist/src/core/InputManager";
 import CameraManager from "./CameraManager";
@@ -62,7 +62,7 @@ class CanvasCamera extends Camera {
             this._thirdPersonMovement(delta)
         }
 
-        if(this._selected && this._cameraObserver && Razor.IS_MOUSE_INSIDE) {
+        if(this._selected && this._cameraObserver && Gallant.IS_MOUSE_INSIDE) {
             this._cameraObserver(this.getTransform())
         }
 

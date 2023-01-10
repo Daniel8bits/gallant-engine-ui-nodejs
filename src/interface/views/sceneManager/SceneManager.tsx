@@ -1,5 +1,4 @@
-import useGameCore from '@hooks/useGameCore';
-import { RazorContext, RazorObserverActions } from '@providers/RazorProvider';
+import { useGallantStore, useGameCore } from '@store/Global.store';
 import React, { useContext } from 'react';
 
 import {FaTrashAlt} from 'react-icons/fa'
@@ -11,35 +10,26 @@ interface SceneManagerProps {
 
 const SceneManager: React.FC<SceneManagerProps> = () => {
   const core = useGameCore()
-  const razorContext = useContext(RazorContext);
+  const gallant = useGallantStore();
 
-  function selectEntity(entityName: string) {
-    if(core.getSceneManager().getActive().has(entityName)) {
-      razorContext.observerDispatch({
-        type: RazorObserverActions.selectEntity,
-        payload: entityName
-      })
-      core.setSelectedEntity(entityName)
+  function selectEntity(entity: string) {
+    if(core.getSceneManager().getActive().has(entity)) {
+      gallant.selectEntity({entity})
+      core.setSelectedEntity(entity)
     }
   }
 
   function removeEntity(entityName: string) {
-    if(razorContext.observers.selected.entity === entityName) {
-      razorContext.observerDispatch({
-        type: RazorObserverActions.selectEntity,
-        payload: null
-      })
+    if(gallant.selected.entity === entityName) {
+      gallant.selectEntity({entity: null})
       core.setSelectedEntity(null)
     }
     core.removeEntity(entityName)
     if(
       core.getSceneManager().getActive().getKeys().length === 0  ||
-      razorContext.observers.selected.entity !== entityName
+      gallant.selected.entity !== entityName
     ) {
-      razorContext.observerDispatch({
-        type: RazorObserverActions.selectEntity,
-        payload: null
-      })
+      gallant.selectEntity({entity: null})
       core.setSelectedEntity(null)
     }
   }
@@ -48,8 +38,8 @@ const SceneManager: React.FC<SceneManagerProps> = () => {
     <div className='container-content scene-manager'>
       <SimpleBar style={{ maxHeight: '100%' }}>
         <ul>
-          {razorContext.observers.scenes[0].entities.map((i) => {
-            const selected = razorContext.observers.selected.entity === i
+          {gallant.scenes[0].entities.map((i) => {
+            const selected = gallant.selected.entity === i
             return (
               <li 
                 key={i} 

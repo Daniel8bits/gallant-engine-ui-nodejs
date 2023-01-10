@@ -1,7 +1,5 @@
-import useGameCore from '@hooks/useGameCore';
-
-import React, { forwardRef, useContext } from 'react';
-import { RazorContext, RazorObserverActions } from '@providers/RazorProvider';
+import { useGallantStore, useGameCore } from '@store/Global.store';
+import React, { forwardRef } from 'react';
 
 interface ViewportProps {
   
@@ -10,16 +8,13 @@ interface ViewportProps {
 const Viewport: React.ForwardRefRenderFunction<HTMLCanvasElement, ViewportProps> = (props, ref) => {
 
   const core = useGameCore()
-  const razorContext = useContext(RazorContext);
+  const gallant = useGallantStore()
 
 
   function selectEntity(e: React.MouseEvent) {
     const entity = core.selectEntity(e.clientX, e.clientY)
     if(entity) {
-      razorContext.observerDispatch({
-        type: RazorObserverActions.selectEntity,
-        payload: entity
-      })
+      gallant.selectEntity({entity})
     }
   }
 

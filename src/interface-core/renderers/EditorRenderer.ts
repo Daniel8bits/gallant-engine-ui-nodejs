@@ -5,7 +5,7 @@ import Shader from "gallant-engine/dist/src/appearance/Shader";
 import { Matrix4, toRadians } from "gallant-engine/dist/src/math/LA";
 import GLUtils, { gl } from "gallant-engine/dist/src/gl/GLUtils";
 import ResourceManager from "gallant-engine/dist/src/core/ResourceManager";
-import Razor from "gallant-engine/dist/src/core/Razor";
+import Gallant from "gallant-engine/dist/src/core/Gallant";
 
 import SimpleEntity from "@interface-core/entities/SimpleEntity";
 import CameraManager from "@interface-core/CameraManager";
@@ -39,8 +39,8 @@ class EditorRenderer extends Renderer {
       this._framebuffer = gl.createFramebuffer()
       this._depthBuffer = gl.createRenderbuffer()
       this._texture = new Texture()
-      this._texture.setWidth(Razor.CANVAS.width)
-      this._texture.setHeight(Razor.CANVAS.height)
+      this._texture.setWidth(Gallant.CANVAS.width)
+      this._texture.setHeight(Gallant.CANVAS.height)
       this._texture.create()
       this._shader = ResourceManager.getShader('editor-shader')
       this._id = 0;
@@ -126,7 +126,7 @@ class EditorRenderer extends Renderer {
       //gl.bindRenderbuffer(gl.RENDERBUFFER, null);
       gl.bindFramebuffer(gl.FRAMEBUFFER, null);
       this._texture.unbind()
-      gl.viewport(0, 0, Razor.CANVAS.width, Razor.CANVAS.height);
+      gl.viewport(0, 0, Gallant.CANVAS.width, Gallant.CANVAS.height);
       gl.clearColor(0, 0, 0, 1);
       gl.clear(gl.COLOR_BUFFER_BIT| gl.DEPTH_BUFFER_BIT);
     }

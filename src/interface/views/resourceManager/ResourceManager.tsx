@@ -1,6 +1,4 @@
-import useGameCore from '@hooks/useGameCore';
-import { ERazorResources, RazorContext } from '@providers/RazorProvider';
-
+import { useGallantStore, useGameCore, EGallantResources } from '@store/Global.store';
 import React, { useContext } from 'react';
 import SimpleBar from 'simplebar-react';
 
@@ -21,7 +19,7 @@ interface ResourceManagerProps {
 const ResourceManager: React.FC<ResourceManagerProps> = () => {
 
   const core = useGameCore()
-  const razorContext = useContext(RazorContext);
+  const gallant = useGallantStore();
 
   function createNewEntity(vaoName: string) {
     core.createNewEntity(vaoName)
@@ -31,7 +29,7 @@ const ResourceManager: React.FC<ResourceManagerProps> = () => {
     <div className='container-content resource-manager'>
       <SimpleBar style={{ maxHeight: '100%' }}>
         <ul>
-          {razorContext.observers.resources[ERazorResources.VAO].keys.map(vao => {
+          {gallant.resources[EGallantResources.VAO].keys.map(vao => {
             return (
               <li key={vao} onDoubleClick={() => createNewEntity(vao)}>
                 <img src="/interface-assets/icons/obj-file-icon.svg" alt={vao} />
